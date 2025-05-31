@@ -15,18 +15,18 @@ public class User {
     private String name;
     private String email;
     private String role;
-    private boolean suspended;
+    private boolean isSuspended;
     private List<BorrowedBook> borrowedBooks = new ArrayList<>();
 
     public User() {
     }
 
-    public User(String id, String name, String email, String role, boolean suspended) {
+    public User(String id, String name, String email, String role, boolean status) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.role = role;
-        this.suspended = suspended;
+        this.isSuspended = status;
     }
 
 
@@ -63,11 +63,11 @@ public class User {
     }
 
     public boolean isSuspended() {
-        return suspended;
+        return isSuspended;
     }
 
-    public void setSuspended(boolean suspended) {
-        this.suspended = suspended;
+    public void setSuspended(boolean status) {
+        this.isSuspended = status;
     }
 
     public List<BorrowedBook> getBorrowedBooks() {
