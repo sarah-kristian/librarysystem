@@ -52,12 +52,12 @@ public class LibraryServiceImpl implements LibraryQueryService, LibraryCirculati
     public List<BorrowedBook> getUserBorrowHistory(String userId){
         User user = searchByUserId(userId);
         return userRepo.findBorrowingHistory(user);
-    };
+    }
     @Override
     public List<BorrowedBook> getUserActiveBorrows(String userId){
         User user = searchByUserId(userId);
         return userRepo.findBooksOutByUser(user);
-    };
+    }
 
 
 // ---------------------------
@@ -71,18 +71,18 @@ public class LibraryServiceImpl implements LibraryQueryService, LibraryCirculati
                 System.out.println("--- Books ---");
                 System.out.println(
                         "--------------------------------------------------------------------------------------------------");
-                System.out.println(String.format("%-12s | %-15s | %-30s",
-                        "BOOK ID", "AUTHOR", "TITLE"));
+                System.out.printf("%-12s | %-15s | %-30s",
+                        "BOOK ID", "AUTHOR", "TITLE");
                 System.out.println(
-                        "--------------------------------------------------------------------------------------------------");
+                        "------------------------------------------------------------------------------");
                 for (Book book : bookList) {
-                    System.out.println(String.format("%-12s | %-15s | %-30s",
+                    System.out.printf("%-12s | %-15s | %-30s",
                             book.getId(),
                             book.getAuthor(),
-                            book.getTitle()));
+                            book.getTitle());
                 }
                 System.out.println(
-                        "--------------------------------------------------------------------------------------------------");
+                        "------------------------------------------------------------------------------");
             }
     }
 
@@ -150,11 +150,9 @@ public class LibraryServiceImpl implements LibraryQueryService, LibraryCirculati
         if (!book.getLibraryStatus().isAvailable()) {
             throw new IllegalStateException("Book is already borrowed");
         }
-
         if (user.isSuspended()) {
             throw new IllegalStateException("User is suspended");
         }
-
         if (user.getActiveBorrowedCount() >= user.getBorrowingLimit()) {
             throw new IllegalStateException("User has reached their borrowing limit");
         }
