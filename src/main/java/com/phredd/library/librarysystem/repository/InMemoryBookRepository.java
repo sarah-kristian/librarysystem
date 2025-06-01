@@ -1,6 +1,7 @@
 package com.phredd.library.librarysystem.repository;
 
 import com.phredd.library.librarysystem.model.Book;
+import com.phredd.library.librarysystem.model.LibraryStatus;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -57,4 +58,14 @@ public class InMemoryBookRepository implements BookRepository {
     public List<Book> findAll() {
         return new ArrayList<>(books.values());
     }
+
+    @Override
+    public List<Book> findAllBorrowedBooks() {
+        return books.values().stream()
+                .filter(book -> !book.getLibraryStatus().isAvailable())
+                .collect(Collectors.toList());
+    }
+
+
+
 }
