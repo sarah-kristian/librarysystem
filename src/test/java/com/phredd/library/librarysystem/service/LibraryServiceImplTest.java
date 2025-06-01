@@ -2,11 +2,10 @@ package com.phredd.library.librarysystem.service;
 
 import com.phredd.library.librarysystem.model.*;
 import com.phredd.library.librarysystem.repository.*;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class LibraryServiceImplTest {
@@ -38,17 +37,40 @@ class LibraryServiceImplTest {
     @Test
     void processIssue_validBookAndUser_returnsTrue() {
 
+        // Issue book (should succeed)
         boolean result = libraryService.processIssue("book1", "user1");
-
         assertTrue(result);
+
+        // updatedBook should no longer be available and should be assigned to user1
         Book updatedBook = bookRepo.findById("book1").get();
         assertFalse(updatedBook.getLibraryStatus().isAvailable());
         assertEquals("user1", updatedBook.getLibraryStatus().getBorrowedByUserId());
 
+        // updatedBook should be in user's borrowedbooks
         User updatedUser = userRepo.findUserById("user1").get();
         assertEquals(1, updatedUser.getBorrowedBooks().size());
     }
 
+    @Test
+    void processIssue_userMaxBorrowLimit_returnsFalse() {
+        // Get user and update their borrowing limit
+        User user = userRepo.findUserById("user1").get();
+        user.setBorrowingLimit(1);
+        userRepo.saveUserInfo(user);
+
+        // Issue first book (should succeed)
+        boolean firstResult = libraryService.processIssue("book1", "user1");
+        assertTrue(firstResult, "First book should be successfully issued");
+
+        // Attempt to issue second book (should fail)
+        boolean secondResult = libraryService.processIssue("book2", "user1");
+        assertFalse(secondResult, "User has already reached max borrowing limit");
+
+        // Book2 should still be available and unassigned
+        Book updatedBook = bookRepo.findById("book2").get();
+        assertTrue(updatedBook.getLibraryStatus().isAvailable());
+        assertNull(updatedBook.getLibraryStatus().getBorrowedByUserId());
+    }
 
     @Test
     void processIssue_userSuspended_returnsFalse() {
@@ -85,5 +107,22 @@ class LibraryServiceImplTest {
         Book stillBorrowed = bookRepo.findById("book2").get();
         assertFalse(stillBorrowed.getLibraryStatus().isAvailable(), "Book2 should still be borrowed");
 
+    }
+
+    @Test
+    void searchByBookTitle_validTitle_returnsCorrectBooks() {
+        List<Book> result = libraryService.searchByBookTitle("Dune");
+
+        assertEquals(1, result.size(), "Should return one book with 'Dune' in the title");
+        assertEquals("Dune", result.get(0).getTitle());
+    }
+
+    @Test
+    void searchByUserId_invalidId_throwsException() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                libraryService.searchByUserId("invalidUser123")
+        );
+
+        assertEquals("User not found: invalidUser123", exception.getMessage());
     }
 }
