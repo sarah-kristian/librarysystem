@@ -1,4 +1,4 @@
-package com.predd.library.librarysystem.model;
+package com.phredd.library.librarysystem.model;
 
 import java.util.ArrayList;
 import java.util.List;

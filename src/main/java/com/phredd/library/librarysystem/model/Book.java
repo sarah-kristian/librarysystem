@@ -1,7 +1,4 @@
-package com.predd.library.librarysystem.model;
-
-import java.time.LocalDate;
-import java.util.List;
+package com.phredd.library.librarysystem.model;
 
 /**
  * Represents a book in the library system.

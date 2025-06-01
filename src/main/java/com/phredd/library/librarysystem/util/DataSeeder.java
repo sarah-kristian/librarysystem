@@ -1,10 +1,10 @@
-package com.predd.library.librarysystem.util;
+package com.phredd.library.librarysystem.util;
 
-import com.predd.library.librarysystem.model.Book;
-import com.predd.library.librarysystem.model.User;
-import com.predd.library.librarysystem.model.LibraryStatus;
-import com.predd.library.librarysystem.repository.InMemoryBookRepository;
-import com.predd.library.librarysystem.repository.InMemoryUserRepository;
+import com.phredd.library.librarysystem.model.Book;
+import com.phredd.library.librarysystem.model.User;
+import com.phredd.library.librarysystem.model.LibraryStatus;
+import com.phredd.library.librarysystem.repository.InMemoryBookRepository;
+import com.phredd.library.librarysystem.repository.InMemoryUserRepository;
 
 public class DataSeeder {
 

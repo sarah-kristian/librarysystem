@@ -1,4 +1,4 @@
-package com.predd.library.librarysystem.model;
+package com.phredd.library.librarysystem.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,20 +17,51 @@ import java.util.List;
 
 public class LibraryStatus {
 
-    private boolean available;
+    private boolean isAvailable;
     private String borrowedByUserId;
     private LocalDate dueDate;
     private List<HoldRequest> holdQueue = new ArrayList<>();
 
     public LibraryStatus() {
-        this.available = true;
+        this.isAvailable = true;
     }
 
     public LibraryStatus(boolean available, String borrowedByUserId, LocalDate dueDate, List<HoldRequest> holdQueue) {
-        this.available = available;
+        this.isAvailable = available;
         this.borrowedByUserId = borrowedByUserId;
         this.dueDate = dueDate;
         this.holdQueue = holdQueue;
     }
 
+    public List<HoldRequest> getHoldQueue() {
+        return holdQueue;
+    }
+
+    public void setHoldQueue(List<HoldRequest> holdQueue) {
+        this.holdQueue = holdQueue;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public String getBorrowedByUserId() {
+        return borrowedByUserId;
+    }
+
+    public void setBorrowedByUserId(String borrowedByUserId) {
+        this.borrowedByUserId = borrowedByUserId;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
 }

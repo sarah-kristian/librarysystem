@@ -1,8 +1,8 @@
-package com.predd.library.librarysystem;
+package com.phredd.library.librarysystem;
 
-import com.predd.library.librarysystem.repository.InMemoryBookRepository;
-import com.predd.library.librarysystem.repository.InMemoryUserRepository;
-import com.predd.library.librarysystem.util.DataSeeder;
+import com.phredd.library.librarysystem.repository.InMemoryBookRepository;
+import com.phredd.library.librarysystem.repository.InMemoryUserRepository;
+import com.phredd.library.librarysystem.util.DataSeeder;
 
 
 import org.springframework.boot.SpringApplication;
