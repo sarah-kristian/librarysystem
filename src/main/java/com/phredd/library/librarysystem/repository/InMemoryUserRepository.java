@@ -1,6 +1,5 @@
 package com.phredd.library.librarysystem.repository;
 
-import com.phredd.library.librarysystem.model.Book;
 import com.phredd.library.librarysystem.model.BorrowedBook;
 import com.phredd.library.librarysystem.model.User;
 
@@ -25,7 +24,6 @@ public class InMemoryUserRepository implements UserRepository {
     private final Map<String, User> users = new HashMap<>();
 
     @Override
-//    “Hey users map — here’s a new entry. Use the user’s ID as the key, and store the full user object as the value.”
     public void saveUserInfo(User user) {
         users.put(user.getId(), user);
     }
@@ -36,7 +34,6 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-//    “Try to get the user. If it’s null, return an empty box. If it’s there, return a box holding it.”
     public Optional<User> findUserById(String id) {
         return Optional.ofNullable(users.get(id));
     }
@@ -58,9 +55,9 @@ public class InMemoryUserRepository implements UserRepository {
         return user.getBorrowedBooks().stream()
                 .filter(book -> !book.isReturned())
                 .collect(Collectors.toList());
-    };
+    }
 
     public List<BorrowedBook> findBorrowingHistory(User user){
         return user.getBorrowedBooks();
-    };
+    }
 }

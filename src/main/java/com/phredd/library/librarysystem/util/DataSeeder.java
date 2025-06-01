@@ -63,9 +63,9 @@ public class DataSeeder {
                 false
         );
 
-        userRepository.save(adminUser);
-        userRepository.save(regularUser1);
-        userRepository.save(regularUser2);
+        userRepository.saveUserInfo(adminUser);
+        userRepository.saveUserInfo(regularUser1);
+        userRepository.saveUserInfo(regularUser2);
         System.out.println("Seeded 3 users.");
     }
 }
