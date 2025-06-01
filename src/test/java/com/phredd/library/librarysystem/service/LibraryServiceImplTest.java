@@ -32,7 +32,7 @@ class LibraryServiceImplTest {
         bookRepo.save(book4);
 
         User user = new User("user1", "Test User", "test@example.com", "regular", false);
-        userRepo.save(user);
+        userRepo.saveUserInfo(user);
     }
 
     @Test
@@ -45,7 +45,7 @@ class LibraryServiceImplTest {
         assertFalse(updatedBook.getLibraryStatus().isAvailable());
         assertEquals("user1", updatedBook.getLibraryStatus().getBorrowedByUserId());
 
-        User updatedUser = userRepo.findById("user1").get();
+        User updatedUser = userRepo.findUserById("user1").get();
         assertEquals(1, updatedUser.getBorrowedBooks().size());
     }
 
@@ -54,7 +54,7 @@ class LibraryServiceImplTest {
     void processIssue_userSuspended_returnsFalse() {
         // First, suspend user
         User suspendedUser = new User("user2", "Suspended User", "suspended@example.com", "regular", true);
-        userRepo.save(suspendedUser);
+        userRepo.saveUserInfo(suspendedUser);
 
         // Attempt to issue a book to suspended user
         boolean result = libraryService.processIssue("book1", "user2");
@@ -76,7 +76,7 @@ class LibraryServiceImplTest {
         assertTrue(updatedBook.getLibraryStatus().isAvailable(), "Returned book should now be marked as available");
 
         // Check user status
-        User updatedUser = userRepo.findById("user1").get();
+        User updatedUser = userRepo.findUserById("user1").get();
         assertTrue(updatedUser.getBorrowedBooks().stream()
                         .anyMatch(b -> b.getBookId().equals("book1") && b.isReturned()),
                 "Expected book1 to be marked as returned in user's borrowed books"

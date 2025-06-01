@@ -6,22 +6,21 @@ import java.time.LocalDate;
  * Represents a record of a book borrowed by a user.
  * <p>
  * Each entry tracks which book was borrowed, when, and whether it has been returned.
- * It allows for an eventual list of (all) borrowed books associated with a user.
  * </p>
  */
 public class BorrowedBook {
 
     private String bookId;
-    private LocalDate borrowedOn;
+    private LocalDate borrowDate;
     private LocalDate dueDate;
     private boolean returned;
 
     public BorrowedBook() {
     }
 
-    public BorrowedBook(String bookId, LocalDate borrowedOn, LocalDate dueDate, boolean returned) {
+    public BorrowedBook(String bookId, LocalDate borrowDate, LocalDate dueDate, boolean returned) {
         this.bookId = bookId;
-        this.borrowedOn = borrowedOn;
+        this.borrowDate = borrowDate;
         this.dueDate = dueDate;
         this.returned = returned;
     }
@@ -34,12 +33,12 @@ public class BorrowedBook {
         this.bookId = bookId;
     }
 
-    public LocalDate getBorrowedOn() {
-        return borrowedOn;
+    public LocalDate getBorrowDate() {
+        return borrowDate;
     }
 
-    public void setBorrowedOn(LocalDate borrowedOn) {
-        this.borrowedOn = borrowedOn;
+    public void setBorrowDate(LocalDate borrowDate) {
+        this.borrowDate = borrowDate;
     }
 
     public LocalDate getDueDate() {

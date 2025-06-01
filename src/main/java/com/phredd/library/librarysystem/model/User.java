@@ -10,16 +10,19 @@ import java.util.List;
  * additional privileges such as adding or suspending users, and managing the catalog.
  * </p>
  */
+
 public class User {
     private String id;
     private String name;
     private String email;
     private String role;
+    private int borrowingLimit = 5;
     private boolean isSuspended;
     private List<BorrowedBook> borrowedBooks = new ArrayList<>();
 
     public User() {
     }
+
 
     public User(String id, String name, String email, String role, boolean status) {
         this.id = id;
@@ -76,5 +79,19 @@ public class User {
 
     public void setBorrowedBooks(List<BorrowedBook> borrowedBooks) {
         this.borrowedBooks = borrowedBooks;
+    }
+
+    public int getBorrowingLimit() {
+        return borrowingLimit;
+    }
+
+    public void setBorrowingLimit(int borrowingLimit) {
+        this.borrowingLimit = borrowingLimit;
+    }
+
+    public int getActiveBorrowedCount() {
+        return (int) borrowedBooks.stream()
+                .filter(book -> !book.isReturned())
+                .count();
     }
 }

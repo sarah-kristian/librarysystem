@@ -32,4 +32,6 @@ public interface BookRepository {
     List<Book> findByAuthor(String author);
 
     List<Book> findAll();
+
+    List<Book> findAllBorrowedBooks();
 }
