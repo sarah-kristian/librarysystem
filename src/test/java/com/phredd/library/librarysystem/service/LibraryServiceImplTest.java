@@ -22,8 +22,14 @@ class LibraryServiceImplTest {
         userRepo = new InMemoryUserRepository();
         libraryService = new LibraryServiceImpl(bookRepo, userRepo);
 
-        Book book = new Book("book1", "9780441478125", "The Left Hand of Darkness", "Ursula K. Le Guin", "Ace Books", 1969, new LibraryStatus());
-        bookRepo.save(book);
+        Book book1 = new Book("book1", "9780441478125", "The Left Hand of Darkness", "Ursula K. Le Guin", "Ace Books", 1969, new LibraryStatus());
+        Book book2 = new Book("book2", "9780340839935", "The Dispossessed", "Ursula K. Le Guin", "Gollancz", 1974, new LibraryStatus());
+        Book book3 = new Book("book3", "9780441013593", "Dune", "Frank Herbert", "Ace Books", 1965, new LibraryStatus());
+        Book book4 = new Book("book4", "9780345333926", "Ringworld", "Larry Niven", "Del Rey", 1970, new LibraryStatus());
+        bookRepo.save(book1);
+        bookRepo.save(book2);
+        bookRepo.save(book3);
+        bookRepo.save(book4);
 
         User user = new User("user1", "Test User", "test@example.com", "regular", false);
         userRepo.save(user);
@@ -59,6 +65,7 @@ class LibraryServiceImplTest {
     void processReturn_bookWasBorrowed_returnsTrue() {
         // First, issue the book
         libraryService.processIssue("book1", "user1");
+        libraryService.processIssue("book2", "user1");
 
         // Then, return it
         boolean returnResult = libraryService.processReturn("book1", "user1");
@@ -70,6 +77,13 @@ class LibraryServiceImplTest {
 
         // Check user status
         User updatedUser = userRepo.findById("user1").get();
-        assertTrue(updatedUser.getBorrowedBooks().get(0).isReturned(), "User's borrowed book should be marked as returned");
+        assertTrue(updatedUser.getBorrowedBooks().stream()
+                        .anyMatch(b -> b.getBookId().equals("book1") && b.isReturned()),
+                "Expected book1 to be marked as returned in user's borrowed books"
+        );
+
+        Book stillBorrowed = bookRepo.findById("book2").get();
+        assertFalse(stillBorrowed.getLibraryStatus().isAvailable(), "Book2 should still be borrowed");
+
     }
 }
