@@ -1,0 +1,75 @@
+package com.phredd.library.librarysystem.service;
+
+import com.phredd.library.librarysystem.model.*;
+import com.phredd.library.librarysystem.repository.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class LibraryServiceImplTest {
+
+
+    private LibraryServiceImpl libraryService;
+    private InMemoryBookRepository bookRepo;
+    private InMemoryUserRepository userRepo;
+
+    @BeforeEach
+    void setUp() {
+        bookRepo = new InMemoryBookRepository();
+        userRepo = new InMemoryUserRepository();
+        libraryService = new LibraryServiceImpl(bookRepo, userRepo);
+
+        Book book = new Book("book1", "9780441478125", "The Left Hand of Darkness", "Ursula K. Le Guin", "Ace Books", 1969, new LibraryStatus());
+        bookRepo.save(book);
+
+        User user = new User("user1", "Test User", "test@example.com", "regular", false);
+        userRepo.save(user);
+    }
+
+    @Test
+    void processIssue_validBookAndUser_returnsTrue() {
+
+        boolean result = libraryService.processIssue("book1", "user1");
+
+        assertTrue(result);
+        Book updatedBook = bookRepo.findById("book1").get();
+        assertFalse(updatedBook.getLibraryStatus().isAvailable());
+        assertEquals("user1", updatedBook.getLibraryStatus().getBorrowedByUserId());
+
+        User updatedUser = userRepo.findById("user1").get();
+        assertEquals(1, updatedUser.getBorrowedBooks().size());
+    }
+
+
+    @Test
+    void processIssue_userSuspended_returnsFalse() {
+        // First, suspend user
+        User suspendedUser = new User("user2", "Suspended User", "suspended@example.com", "regular", true);
+        userRepo.save(suspendedUser);
+
+        // Attempt to issue a book to suspended user
+        boolean result = libraryService.processIssue("book1", "user2");
+        assertFalse(result, "Suspended user should not be able to borrow a book");
+    }
+
+    @Test
+    void processReturn_bookWasBorrowed_returnsTrue() {
+        // First, issue the book
+        libraryService.processIssue("book1", "user1");
+
+        // Then, return it
+        boolean returnResult = libraryService.processReturn("book1", "user1");
+        assertTrue(returnResult, "Book should be successfully returned");
+
+        // Check book status
+        Book updatedBook = bookRepo.findById("book1").get();
+        assertTrue(updatedBook.getLibraryStatus().isAvailable(), "Returned book should now be marked as available");
+
+        // Check user status
+        User updatedUser = userRepo.findById("user1").get();
+        assertTrue(updatedUser.getBorrowedBooks().get(0).isReturned(), "User's borrowed book should be marked as returned");
+    }
+}
