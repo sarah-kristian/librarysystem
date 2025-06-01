@@ -1,6 +1,6 @@
-package com.predd.library.librarysystem.repository;
+package com.phredd.library.librarysystem.repository;
 
-import com.predd.library.librarysystem.model.User;
+import com.phredd.library.librarysystem.model.User;
 
 import java.util.List;
 import java.util.Optional;
