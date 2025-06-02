@@ -101,7 +101,7 @@ All dependencies were declared in pom.xml and managed using Maven. The most impo
 - Spring Boot Starter Test (JUnit 5): Unit testing
 
 <div align="center">
-  <img src="images/images/testDependancy.png" alt="Sample dependancy in " style="max-width: 100%; height: auto;" />
+  <img src="images/testDependancy.png" alt="Sample dependancy in pom.xml" style="max-width: 100%; height: auto;" />
   <p><em>Figure 7: Sample dependancy</em></p>
 </div>
 
